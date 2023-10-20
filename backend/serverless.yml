@@ -11,6 +11,20 @@ provider:
   stackTags:
     ProjectName: ALNG
     Environment: ${self:provider.stage}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action: 's3:*'
+          Resource:
+            - 'arn:aws:s3:::a-low-l-training-data/*'
+            - 'arn:aws:s3:::a-low-l-training-data'
+            - 'arn:aws:s3:::a-low-l-snapshots/*'
+            - 'arn:aws:s3:::a-low-l-snapshots'
+        - Effect: Allow
+          Action: 'rekognition:*'
+          Resource:
+            - '*'
 
 plugins:
   - serverless-offline
@@ -24,12 +38,26 @@ custom:
     number: 3
 
 functions:
-  app:
-    handler: app.handler
+  api:
+    handler: app.api
     events:
       - http:
           path: sample/{proxy+}
           method: ANY
+
+  train:
+    handler: app.train
+  
+  detect:
+    handler: app.detect
+    events:
+      - s3:
+          bucket: a-low-l-snapshots
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: cam01/
+          existing: true
+          forceDeploy: true
 
 package:
   individually: true
