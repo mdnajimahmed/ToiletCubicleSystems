@@ -1,0 +1,35 @@
+service: toilet-cubicle-system
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-southeast-1
+  stage: ${opt:stage}
+  memorySize: 2048
+  stackTags:
+    ProjectName: ALNG
+    Environment: ${self:provider.stage}
+
+plugins:
+  - serverless-offline
+  - serverless-prune-plugin
+  - serverless-plugin-resource-tagging
+
+custom:
+  prune:
+    automatic: true
+    includeLayers: true
+    number: 3
+
+functions:
+  app:
+    handler: app.handler
+    events:
+      - http:
+          path: sample/{proxy+}
+          method: ANY
+
+package:
+  individually: true
