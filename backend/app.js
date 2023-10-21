@@ -2,6 +2,7 @@ import {Server} from './src/interfaces/server.js';
 import * as routes from './src/controllers/routes.index.js';
 import {addNewUser} from './src/service/train.js'
 import {detectHuman} from './src/service/detectHuman.js';
+import {produce} from './src/service/kafkaProducer.js';
 
 
 export const api = async (event, context) => {
@@ -13,7 +14,18 @@ export const train = async (event, context) => {
     await addNewUser(event)
 };
 export const detect = async (event, context) => {
-    await detectHuman(event)
+    // await detectHuman(event)
+    const kInput = {
+        topic: 'alowl',
+        messages: [
+          {
+            value: 'Hello, world!'
+          },
+        ],
+      }
+      console.log("producting",kInput)
+      const response = await produce(kInput)
+      console.log("response",response)
 };
 
 

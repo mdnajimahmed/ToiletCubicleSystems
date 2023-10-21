@@ -8,6 +8,13 @@ provider:
   region: ap-southeast-1
   stage: ${opt:stage}
   memorySize: 2048
+  vpc:
+    securityGroupIds:
+      - sg-7623bc3c
+    subnetIds:
+      - subnet-64f1963d
+      - subnet-92f952f4
+      - subnet-d3469e9b
   stackTags:
     ProjectName: ALNG
     Environment: ${self:provider.stage}
