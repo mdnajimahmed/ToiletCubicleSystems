@@ -25,6 +25,12 @@ provider:
           Action: 'rekognition:*'
           Resource:
             - '*'
+        - Effect: Allow
+          Action: 'kafka-cluster:*'
+          Resource:
+            - '*'
+
+            
 
 plugins:
   - serverless-offline

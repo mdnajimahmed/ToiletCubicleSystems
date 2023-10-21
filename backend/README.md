@@ -1,20 +1,16 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# Commands
+- docker run -it 41d5d4947d79 /bin/bash -c "export AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID>; export AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY>; export AWS_DEFAULT_REGION=ap-southeast-1; ./kvs_gstreamer_sample a_low_l_cam01 rtsp://rtsp:qijbOpkq@192.168.0.11:554/av_stream/ch0"
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+- aws dynamodb create-table --table-name facerecognition \
+--attribute-definitions AttributeName=RekognitionId,AttributeType=S \
+--key-schema AttributeName=RekognitionId,KeyType=HASH \
+--provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
+--region ap-southeast-1
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+
+- aws rekognition create-collection --collection-id facerecognition_collection --region ap-southeast-1
+
+- aws cloudformation create-stack --stack-name aLowLMSK --template-body file://infra/msk.yml
+- aws cloudformation delete-stack --stack-name aLowLMSK

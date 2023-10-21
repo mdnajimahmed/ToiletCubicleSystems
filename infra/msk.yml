@@ -1,0 +1,19 @@
+Resources:
+  MSKServerlessCluster:
+    Type: 'AWS::MSK::ServerlessCluster'
+    Properties:
+      ClientAuthentication:
+        Sasl:
+          Iam:
+            Enabled: true
+      ClusterName: aLowLCluster
+      Tags:
+        Name: dev
+      VpcConfigs:
+        - SecurityGroups:
+            - sg-7623bc3c # todo: Create new SG to allow traffic from default SG and local machine
+          SubnetIds:
+            - subnet-64f1963d
+            - subnet-92f952f4
+  
+  
