@@ -8,13 +8,7 @@ provider:
   region: ap-southeast-1
   stage: ${opt:stage}
   memorySize: 2048
-  vpc:
-    securityGroupIds:
-      - sg-7623bc3c
-    subnetIds:
-      - subnet-64f1963d
-      - subnet-92f952f4
-      - subnet-d3469e9b
+  timeout: 6
   stackTags:
     ProjectName: ALNG
     Environment: ${self:provider.stage}
@@ -36,6 +30,10 @@ provider:
           Action: 'kafka-cluster:*'
           Resource:
             - '*'
+        - Effect: Allow
+          Action: 'lambda:InvokeFunction'
+          Resource:
+            - 'arn:aws:lambda:ap-southeast-1:367739249270:function:toilet-cubicle-system-dev-kafkaPublish'
 
             
 
@@ -71,6 +69,17 @@ functions:
             - prefix: cam01/
           existing: true
           forceDeploy: true
+  
+  kafkaPublish:
+    handler: app.kafkaPublish
+    vpc:
+      securityGroupIds:
+        - sg-7623bc3c
+      subnetIds:
+        - subnet-64f1963d
+        - subnet-92f952f4
+        - subnet-d3469e9b
+
 
 package:
   individually: true

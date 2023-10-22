@@ -14,3 +14,22 @@
 
 - aws cloudformation create-stack --stack-name aLowLMSK --template-body file://infra/msk.yml
 - aws cloudformation delete-stack --stack-name aLowLMSK
+
+
+- kafka-topics.sh --bootstrap-server=boot-9ixeduhy.c3.kafka-serverless.ap-southeast-1.amazonaws.com:9098 --command-config client.properties --create --topic alowl --partitions 1
+
+- kafka-topics.sh --bootstrap-server=boot-9ixeduhy.c3.kafka-serverless.ap-southeast-1.amazonaws.com:9098 --command-config client.properties --list 
+
+
+- kafka-console-producer.sh --bootstrap-server=boot-9ixeduhy.c3.kafka-serverless.ap-southeast-1.amazonaws.com:9098 --producer.config client.properties --topic alowl
+
+- kafka-console-consumer.sh --bootstrap-server=boot-9ixeduhy.c3.kafka-serverless.ap-southeast-1.amazonaws.com:9098 --consumer.config client.properties --topic alowl --from-beginning
+
+- kafka-topics.sh --bootstrap-server=boot-9ixeduhy.c3.kafka-serverless.ap-southeast-1.amazonaws.com:9098 --command-config client.properties --delete --topic alowl
+
+- detection test event
+{
+  "bucketName": "a-low-l-snapshots",
+  "key": "test/image06.jpeg"
+}
+- 

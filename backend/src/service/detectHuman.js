@@ -1,4 +1,6 @@
 import AWS from 'aws-sdk';
+import { invokeLambda } from './invokeLambda.js';
+
 const rekognition = new AWS.Rekognition();
 
 const extractImageLocation = event => {
@@ -9,12 +11,37 @@ const extractImageLocation = event => {
         return event
     }
 }
+
+const publishKafkaEvent = async (bucketName,key,isThereAPerson)=>{
+    const message = {
+        bucketName,key,isThereAPerson
+    }
+    const kInput = {
+        topic: 'alowl',
+        messages: [
+          {
+            value: JSON.stringify(message)
+          },
+        ],
+      }
+      console.log("producting",kInput)
+      const response = await invokeLambda("toilet-cubicle-system-dev-kafkaPublish",kInput)
+    //   const response = await produce(kInput)
+      console.log("response",response)
+}
 export const detectHuman = async (event) => {
     console.log("event", event)
     const { bucketName, key } = extractImageLocation(event)
     console.log(`bucketName = ${bucketName}`)
     console.log(`key = ${key}`)
     const isThereAPerson = await detectPersonsInImage(bucketName, key)
+    console.log("isThereAPerson",isThereAPerson)
+    if (isThereAPerson) {
+        console.log("person detected")
+    } else {
+        console.log("Empty picture")
+    }
+    await publishKafkaEvent(bucketName,key,isThereAPerson)
     // send this event to (kafka)
     // kafka stream to calculate the latest status of the cubicle (elastic beanstalk + elasticache)
     // if a status change is detected send a push notification (AGW WS)
@@ -28,14 +55,6 @@ export const detectHuman = async (event) => {
     // SSM, KMS,
     // Cognito for log in
     // Glue and quicksight to analyze daily events
-
-
-    if (isThereAPerson) {
-        console.log("person detected")
-    } else {
-        console.log("Empty picture")
-    }
-
 }
 
 const detectPersonsInImage = async (bucket, key) => {
@@ -48,6 +67,7 @@ const detectPersonsInImage = async (bucket, key) => {
         },
         MinConfidence: 80,
     };
+    console.log("detecting person in image with param",params)
     const data = await rekognition.detectLabels(params).promise();
     console.log("data", JSON.stringify(data))
     const labels = data?.Labels.filter(label => label.Name.toLowerCase().includes('person') || label.Name.toLowerCase().includes('human')) || [];
