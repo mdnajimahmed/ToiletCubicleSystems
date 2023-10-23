@@ -9,6 +9,18 @@ provider:
   stage: ${opt:stage}
   memorySize: 2048
   timeout: 6
+  environment:
+    APIG_ENDPOINT:
+      Fn::Join:
+        - ''
+        - - Ref: WebsocketsApi
+          - .execute-api.
+          - Ref: AWS::Region
+          - .amazonaws.com/
+          - ${opt:stage}
+    CONNECTIONS_TABLE:
+      Ref: ConnectionsTable
+
   stackTags:
     ProjectName: ALNG
     Environment: ${self:provider.stage}
@@ -34,6 +46,16 @@ provider:
           Action: 'lambda:InvokeFunction'
           Resource:
             - 'arn:aws:lambda:ap-southeast-1:367739249270:function:toilet-cubicle-system-dev-kafkaPublish'
+        - Effect: Allow
+          Action:
+            - dynamodb:DeleteItem
+            - dynamodb:GetItem
+            - dynamodb:Scan
+            - dynamodb:PutItem
+          Resource:
+            Fn::GetAtt:
+              - ConnectionsTable
+              - Arn
 
             
 
@@ -79,7 +101,41 @@ functions:
         - subnet-64f1963d
         - subnet-92f952f4
         - subnet-d3469e9b
+  
+  websocket:
+    handler: websocket.handler
+    events:
+      - websocket:
+          # Handles new connection requests
+          route: $connect
+          # Only the '$connect' route supports an authorizer. The other routes
+          # are secured via the connection ID and therefore it should be handled
+          # like a session ID.
 
+      - websocket:
+          # Handles all unrouted messages
+          route: $default
+
+      - websocket:
+          # Handles disconnect messages
+          route: $disconnect
+resources:
+  Resources:
+    ConnectionsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: connectionId
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: connectionId
+            KeyType: HASH
+        SSESpecification:
+          SSEEnabled: true
+        TimeToLiveSpecification:
+          AttributeName: ttl
+          Enabled: true
 
 package:
   individually: true

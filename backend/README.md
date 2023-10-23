@@ -33,3 +33,13 @@
   "key": "test/image06.jpeg"
 }
 - 
+
+node app.js sh00 10 (10)
+node app.js sh01 4 (10)
+node app.js sh02 14 (14)
+node app.js sh03 12 (14)
+node app.js sh04 8 (14)
+node app.js sh05 16 (16)
+
+-- after 15 second minute
+node app.js sh06 5 (5)

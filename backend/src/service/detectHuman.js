@@ -20,7 +20,8 @@ const publishKafkaEvent = async (bucketName,key,isThereAPerson)=>{
         topic: 'alowl',
         messages: [
           {
-            value: JSON.stringify(message)
+            value: JSON.stringify(message),
+            key:"alowlCam01"
           },
         ],
       }
