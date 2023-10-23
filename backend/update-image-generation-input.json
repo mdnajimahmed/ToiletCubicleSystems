@@ -1,0 +1,18 @@
+{
+    "StreamName":"a_low_l_cam01",
+    "ImageGenerationConfiguration": {
+        "Status": "ENABLED",
+        "ImageSelectorType": "SERVER_TIMESTAMP",
+        "DestinationConfig": {
+            "Uri": "s3://a-low-l-snapshots/cam01",
+            "DestinationRegion": "ap-southeast-1"
+        },
+        "SamplingInterval": 3000,
+        "Format": "JPEG",
+        "FormatConfig": {
+            "JPEGQuality": "80"
+        },
+        "WidthPixels": 1920,
+        "HeightPixels": 1080
+    }
+}

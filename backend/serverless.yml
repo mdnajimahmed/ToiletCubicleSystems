@@ -8,7 +8,7 @@ provider:
   region: ap-southeast-1
   stage: ${opt:stage}
   memorySize: 2048
-  timeout: 6
+  timeout: 15
   environment:
     APIG_ENDPOINT:
       Fn::Join:
@@ -83,6 +83,7 @@ functions:
   
   detect:
     handler: app.detect
+    maximumRetryAttempts: 0
     events:
       - s3:
           bucket: a-low-l-snapshots
