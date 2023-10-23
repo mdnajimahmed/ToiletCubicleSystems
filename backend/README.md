@@ -1,6 +1,10 @@
 # Commands
 - docker run -it 41d5d4947d79 /bin/bash -c "export AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID>; export AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY>; export AWS_DEFAULT_REGION=ap-southeast-1; ./kvs_gstreamer_sample a_low_l_cam01 rtsp://rtsp:qijbOpkq@192.168.0.11:554/av_stream/ch0"
 
+aws kinesisvideo update-image-generation-configuration \
+--cli-input-json file://update-image-generation-input.json
+
+aws kinesisvideo describe-image-generation-configuration --stream-name a_low_l_cam01
 
 
 - aws dynamodb create-table --table-name facerecognition \
@@ -24,6 +28,8 @@
 - kafka-console-producer.sh --bootstrap-server=boot-9ixeduhy.c3.kafka-serverless.ap-southeast-1.amazonaws.com:9098 --producer.config client.properties --topic alowl
 
 - kafka-console-consumer.sh --bootstrap-server=boot-9ixeduhy.c3.kafka-serverless.ap-southeast-1.amazonaws.com:9098 --consumer.config client.properties --topic alowl --from-beginning
+- kafka-console-consumer.sh --bootstrap-server=boot-9ixeduhy.c3.kafka-serverless.ap-southeast-1.amazonaws.com:9098 --consumer.config client.properties --topic alowl
+- kafka-console-consumer.sh --bootstrap-server=boot-9ixeduhy.c3.kafka-serverless.ap-southeast-1.amazonaws.com:9098 --consumer.config client.properties --topic alowlOut
 
 - kafka-topics.sh --bootstrap-server=boot-9ixeduhy.c3.kafka-serverless.ap-southeast-1.amazonaws.com:9098 --command-config client.properties --delete --topic alowl
 
