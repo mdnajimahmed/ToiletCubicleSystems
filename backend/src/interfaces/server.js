@@ -2,12 +2,16 @@ import express from 'express';
 import awsServerlessExpress from 'aws-serverless-express';
 import bodyParser from "body-parser";
 import { v4 as uuidv4 } from 'uuid';
-
+import cors from 'cors'
 import { logger } from '../util/logger.js';
 import { HTTP_METHODS } from '../config/httpMethods.js';
 
 let server;
 
+const corsOptions = {
+    origin: '*',
+    optionsSuccessStatus: 200 
+  }
 
 const requestLogger = (req, res, next) => {
     const reqSubset = {
@@ -38,6 +42,7 @@ const startServer = async (rootPath, routes) => {
 
 
 const registerMiddlewares = () => {
+    server.use(cors(corsOptions))
     server.use(bodyParser.json());
     server.use(requestLogger)
 }
