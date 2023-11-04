@@ -1,2 +1,1 @@
-export * from './teacherController.js';
-export * from './studentController.js';
+export * from './cubicleController.js';

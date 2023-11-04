@@ -38,7 +38,7 @@ aws kinesisvideo describe-image-generation-configuration --stream-name a_low_l_c
   "bucketName": "a-low-l-snapshots",
   "key": "test/image06.jpeg"
 }
-- 
+- websocat wss://3iy02674sg.execute-api.ap-southeast-1.amazonaws.com/dev
 
 node app.js sh00 10 (10)
 node app.js sh01 4 (10)
