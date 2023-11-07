@@ -3,7 +3,7 @@ import { Kafka } from 'kafkajs';
 import {createMechanism } from '@jm18457/kafkajs-msk-iam-authentication-mechanism';
 
 const kafka = new Kafka({
-  brokers: ['boot-9ixeduhy.c3.kafka-serverless.ap-southeast-1.amazonaws.com:9098'],
+  brokers: ['boot-v5bvl8nq.c3.kafka-serverless.ap-southeast-1.amazonaws.com:9098'],
   clientId: 'aLowL',
   ssl: true,
   sasl: createMechanism({ region: 'ap-southeast-1' })

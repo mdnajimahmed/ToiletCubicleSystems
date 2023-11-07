@@ -1,8 +1,19 @@
-import AWS from 'aws-sdk';
+// import AWS from 'aws-sdk';
+import {AWS} from '../util/aws.js'
+const s3 = new AWS.S3();
+
 import { invokeLambda } from './invokeLambda.js';
 
 const rekognition = new AWS.Rekognition();
 
+const deleteSnapshot = async (bucketName, key)=>{
+    const params = {
+        Bucket: bucketName,
+        Key: key
+    };
+    console.log("deleting",params)
+    return await s3.deleteObject(params).promise()
+}
 const extractImageLocation = event => {
     if (event?.Records?.length > 0) {
         const recordS3 = event?.Records[0].s3
@@ -43,6 +54,8 @@ export const detectHuman = async (event) => {
         console.log("Empty picture")
     }
     await publishKafkaEvent(bucketName,key,isThereAPerson)
+    const deleteResponse = await deleteSnapshot(bucketName, key)
+    console.log("deleteResponse",deleteResponse)
     // send this event to (kafka)
     // kafka stream to calculate the latest status of the cubicle (elastic beanstalk + elasticache)
     // if a status change is detected send a push notification (AGW WS)

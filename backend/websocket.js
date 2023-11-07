@@ -1,8 +1,6 @@
-import AWS from 'aws-sdk';
-const apig = new AWS.ApiGatewayManagementApi({
-  endpoint: process.env.APIG_ENDPOINT
-});
-const dynamodb = new AWS.DynamoDB.DocumentClient();
+// import AWS from 'aws-sdk';
+import {AWS,apig, dynamodb} from './src/util/aws.js'
+
 
 const connectionTable = process.env.CONNECTIONS_TABLE;
 

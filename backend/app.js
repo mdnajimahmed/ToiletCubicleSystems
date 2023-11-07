@@ -1,8 +1,11 @@
+import {AWS} from './src/util/aws.js'
+console.log("loaded aws",AWS)
 import { Server } from './src/interfaces/server.js';
 import * as routes from './src/controllers/routes.index.js';
 import { addNewUser } from './src/service/train.js'
 import { detectHuman } from './src/service/detectHuman.js';
 import { produce } from './src/service//kafkaProducer.js';
+
 
 
 export const api = async (event, context) => {

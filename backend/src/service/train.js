@@ -1,5 +1,6 @@
 
-import AWS from 'aws-sdk';
+// import AWS from 'aws-sdk';
+import {AWS} from '../util/aws.js'
 const s3 = new AWS.S3();
 const rekognition = new AWS.Rekognition();
 

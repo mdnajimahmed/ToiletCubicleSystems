@@ -9,6 +9,9 @@ provider:
   stage: ${opt:stage}
   memorySize: 2048
   timeout: 15
+  tracing:
+    lambda: true
+    apiGateway: true
   environment:
     APIG_ENDPOINT:
       Fn::Join:
@@ -27,6 +30,12 @@ provider:
   iam:
     role:
       statements:
+        - Effect: "Allow" # xray permissions (required)
+          Action:
+            - "xray:PutTraceSegments"
+            - "xray:PutTelemetryRecords"
+          Resource:
+            - "*"
         - Effect: Allow
           Action: 's3:*'
           Resource:
